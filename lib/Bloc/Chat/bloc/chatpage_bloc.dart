@@ -66,21 +66,6 @@ class ChatpageBloc extends Bloc<ChatpageEvent, ChatpageState> {
             event.groupID, event.groupName, event.userID, event.userName);
 
     emit(temp_chats());
-    // String admin = "";
-    // Stream members;
-    // await DatabaseServices(userId: FirebaseAuth.instance.currentUser!.uid)
-    //     .getGroupAdmin(event.groupID)
-    //     .then((val) {
-    //   if (val != null) {
-    //     admin = val;
-    //   }
-    // });
-    // print("Memebrs got");
-    // members =
-    //     await DatabaseServices(userId: FirebaseAuth.instance.currentUser!.uid)
-    //         .getMemebers("");
-
-    // emit(Group_info_initial_State(admin: admin, members: members));
     emit(temp());
     emit(exit_success());
   }

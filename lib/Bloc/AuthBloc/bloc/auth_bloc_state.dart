@@ -18,3 +18,11 @@ class LoginButtonClickedState extends AuthBlocState {}
 class HomePageNavigateState extends AuthBlockActionState {}
 
 class LoginPageNavigateState extends AuthBlockActionState {}
+
+class LoginStartState extends AuthBlockActionState {}
+
+class LoginEndState extends AuthBlockActionState {}
+
+class RegisterStartState extends AuthBlockActionState {}
+
+class RegisterEndState extends AuthBlockActionState {}

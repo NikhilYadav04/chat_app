@@ -33,7 +33,7 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
 
   FutureOr<void> registerButtonClickedEvent(
       RegisterButtonClickedEvent event, Emitter<AuthBlocState> emit) async {
-    emit(RegisterButtonClickedState());
+    emit(RegisterStartState());
 
     final AuthService authService = AuthService();
 
@@ -41,9 +41,8 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
         await authService.registerWithEmailPassword(name, email, Password);
 
     if (success == "Success") {
+      emit(RegisterEndState());
       emit(LoginPageNavigateState());
-
-      emit(RegisterInitializeState());
 
       final snackbar = SnackBar(
         duration: Duration(seconds: 4),
@@ -71,7 +70,7 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
       );
       ScaffoldMessenger.of(event.context).showSnackBar(snackbar);
 
-      emit(RegisterInitializeState());
+      emit(RegisterEndState());
     }
   }
 
@@ -82,7 +81,7 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
 
   FutureOr<void> loginButtonClickedEvent(
       LoginButtonClickedEvent event, Emitter<AuthBlocState> emit) async {
-    emit(LoginButtonClickedState());
+    emit(LoginStartState());
 
     final AuthService authService = AuthService();
 
@@ -97,9 +96,9 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
       await HelperFunctions.saveUserLoggedInStatus(true);
       await HelperFunctions.saveUserEMail(Loginemail);
       await HelperFunctions.saveUserName(Login_Name);
-      emit(HomePageNavigateState());
 
-      emit(LoginInitializeState());
+      emit(LoginEndState());
+      emit(HomePageNavigateState());
 
       final snackbar = SnackBar(
         duration: Duration(seconds: 4),
@@ -128,7 +127,7 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
       );
       ScaffoldMessenger.of(event.context).showSnackBar(snackbar);
 
-      emit(LoginInitializeState());
+      emit(LoginEndState());
     }
   }
 }

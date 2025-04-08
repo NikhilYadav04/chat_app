@@ -23,6 +23,7 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
       TextEditingController();
   final AuthBlocBloc authBlocBloc = AuthBlocBloc();
   final formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -49,14 +50,24 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
     return Scaffold(
       body: BlocConsumer<AuthBlocBloc, AuthBlocState>(
         bloc: authBlocBloc,
-        buildWhen: (previous, current) => current is !AuthBlockActionState,
+        buildWhen: (previous, current) => current is! AuthBlockActionState,
         listenWhen: (previous, current) => current is AuthBlockActionState,
         listener: (context, state) {
           if (state is LoginPageNavigateState) {
             Navigator.push(
                 context,
                 PageTransition(
-                    child: LoginPage(), type: PageTransitionType.leftToRight));
+                    child: LoginPage(), type: PageTransitionType.rightToLeft));
+          }
+          if (state is RegisterStartState) {
+            setState(() {
+              isLoading = true;
+            });
+          }
+          if (state is RegisterEndState) {
+            setState(() {
+              isLoading = false;
+            });
           }
         },
         builder: (context, state) {
@@ -101,15 +112,20 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
                           SizedBox(
                             height: responsiveContainerSize(8, width, height),
                           ),
-                          InkWell(
-                              onTap: () {
-                                if (formKey.currentState!.validate()) {
-                                  authBlocBloc.add(RegisterButtonClickedEvent(
-                                      context: context));
-                                }
-                              },
-                              child: RegisterButton(
-                                  context, height, width, textScaleFactor)),
+                          isLoading
+                              ? CircularProgressIndicator(
+                                  color: OrangeColor,
+                                )
+                              : InkWell(
+                                  onTap: () {
+                                    if (formKey.currentState!.validate()) {
+                                      authBlocBloc.add(
+                                          RegisterButtonClickedEvent(
+                                              context: context));
+                                    }
+                                  },
+                                  child: RegisterButton(
+                                      context, height, width, textScaleFactor)),
                           SizedBox(
                             height: responsiveContainerSize(20, width, height),
                           ),

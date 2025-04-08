@@ -86,8 +86,7 @@ class _HomePageState extends State<HomePage> {
                     homeBlocBloc, success.Home_Name, success.Home_Email),
                 appBar: AppB(
                     width, height, textScaleFactor, globalKey, homeBlocBloc),
-                // print(success.Home_Name);
-                // print(success.Home_Email);
+                
                 body: Stack(children: [
                   groupList(success.snapshots, width, height, textScaleFactor),
                 ]),

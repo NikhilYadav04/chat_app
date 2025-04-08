@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 
 String group_name = "";
 
+List<IconData> iconData = [Icons.group, Icons.account_circle, Icons.logout];
+
 class Functions {
   final Bloc homebloc;
   BuildContext context;
@@ -136,7 +138,7 @@ Widget DrawerSc(
             style: TextStyle(
                 fontFamily: "Manrope",
                 fontSize:
-                    responsiveFontSize(28, width, height, textScaleFactor),
+                    responsiveFontSize(40, width, height, textScaleFactor),
                 color: Colors.grey.shade700,
                 fontWeight: FontWeight.bold),
           ),
@@ -153,10 +155,14 @@ Widget DrawerSc(
                       style: TextStyle(
                           color: Colors.grey.shade700,
                           fontSize: responsiveFontSize(
-                              19, width, height, textScaleFactor),
+                              24, width, height, textScaleFactor),
                           fontWeight: FontWeight.bold),
                     ),
-                    leading: Drawer_List[index].icon,
+                    leading: Icon(
+                      iconData[index],
+                      size: responsiveContainerSize(32, width, height),
+                      color: index == 0 ? OrangeColor : Colors.grey.shade800,
+                    ),
                     onTap: () {
                       index == 0
                           ? functions.Group()
@@ -192,15 +198,15 @@ Widget DialogWidget(double width, double height, double textScaleFactor,
         },
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(responsiveBorderRadius(20, width, height)),
+            borderRadius: BorderRadius.circular(
+                responsiveBorderRadius(20, width, height)),
             borderSide: BorderSide(
                 color: Colors.brown.shade800,
                 width: responsiveBorderWidth(2, width, height)),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(responsiveBorderRadius(20, width, height)),
+            borderRadius: BorderRadius.circular(
+                responsiveBorderRadius(20, width, height)),
             borderSide: BorderSide(
                 color: OrangeColor,
                 width: responsiveBorderWidth(2, width, height)),

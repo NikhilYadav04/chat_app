@@ -2,6 +2,7 @@
 
 import 'package:chat_app/Bloc/AuthBloc/bloc/auth_bloc_bloc.dart';
 import 'package:chat_app/pages/home/home_page.dart';
+import 'package:chat_app/shared/colors.dart';
 import 'package:chat_app/shared/scale.dart';
 import 'package:chat_app/widgets/auth/login_page_widgets.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
   final formKeyL = GlobalKey<FormState>();
   final AuthBlocBloc authBlocBloc = AuthBlocBloc();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -51,7 +53,17 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.push(
                 context,
                 PageTransition(
-                    child: HomePage(), type: PageTransitionType.fade));
+                    child: HomePage(), type: PageTransitionType.rightToLeft));
+          }
+          if (state is LoginStartState) {
+            setState(() {
+              isLoading = true;
+            });
+          }
+          if (state is LoginEndState) {
+            setState(() {
+              isLoading = false;
+            });
           }
         },
         builder: (context, state) {
@@ -91,15 +103,19 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(
                             height: responsiveContainerSize(8, width, height),
                           ),
-                          InkWell(
-                              onTap: () {
-                                if (formKeyL.currentState!.validate()) {
-                                  authBlocBloc.add(LoginButtonClickedEvent(
-                                      context: context));
-                                }
-                              },
-                              child: LoginButton(
-                                  context, height, width, textScaleFactor)),
+                          isLoading
+                              ? CircularProgressIndicator(
+                                  color: OrangeColor,
+                                )
+                              : InkWell(
+                                  onTap: () {
+                                    if (formKeyL.currentState!.validate()) {
+                                      authBlocBloc.add(LoginButtonClickedEvent(
+                                          context: context));
+                                    }
+                                  },
+                                  child: LoginButton(
+                                      context, height, width, textScaleFactor)),
                           SizedBox(
                             height: responsiveContainerSize(15, width, height),
                           ),
@@ -110,14 +126,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               );
-            case LoginButtonClickedEvent:
-              return Center(
-                child: CircularProgressIndicator(
-                  color: Colors.yellow.shade800,
-                ),
-              );
             default:
-              return  Center(child: CircularProgressIndicator(
+              return Center(
+                  child: CircularProgressIndicator(
                 color: Colors.yellow.shade800,
               ));
           }

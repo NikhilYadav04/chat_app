@@ -6,18 +6,18 @@ final List<Drawer_Model> Drawer_List = [
   Drawer_Model(
       icon: Icon(
         Icons.group,
-        color: OrangeColor,
+        color: OrangeColor,size: 30,
       ),
       label: " Groups",
       index: 1,
       ),
   Drawer_Model(
-      icon: Icon(Icons.account_circle),
+      icon: Icon(Icons.account_circle,size: 30,),
       label: " Profile",
       index: 2,
       ),
   Drawer_Model(
-      icon: Icon(Icons.logout), label: " Logout", index: 3, ),
+      icon: Icon(Icons.logout,size: 30,), label: " Logout", index: 3, ),
 ];
 
 
