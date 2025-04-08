@@ -126,7 +126,7 @@ Widget GroupList(QuerySnapshot? groupsnapshot, double width, double height,
                 child: loading
                     ? Center(
                         child: CircularProgressIndicator(
-                          color:Colors.yellow.shade800,
+                          color: Colors.yellow.shade800,
                         ),
                       )
                     : SearchTile(width, height, textScaleFactor, groupsnapshot,
@@ -203,21 +203,20 @@ Widget SearchWelome(double width, double height, double textScaleFactor) {
 
 SearchTile(double width, double height, double textScaleFactor,
     QuerySnapshot? groupsnapshot, int index, Bloc search_bloc) {
-  print(widget_loading);
-  // search_bloc.add(Check_Group_Event(
-  //     groupID: groupsnapshot?.docs[index]["groupId"],
-  //     groupName: groupsnapshot?.docs[index]["groupName"]));
-  if (groupCheckCounts[groupsnapshot?.docs[index]["groupId"]] == null) {
-    groupCheckCounts[groupsnapshot?.docs[index]["groupId"]] = 0;
+  String groupID = groupsnapshot?.docs[index]["groupId"];
+  String groupName = groupsnapshot?.docs[index]["groupName"];
+
+  //* we check for same name groups via a map
+  //* if same name group found dont check its status
+  if (groupCheckCounts[groupID] == null) {
+    groupCheckCounts[groupID] = 0;
   }
 
-  if (groupCheckCounts[groupsnapshot?.docs[index]["groupId"]]! < 2) {
-    search_bloc.add(Check_Group_Event(
-        groupID: groupsnapshot?.docs[index]["groupId"],
-        groupName: groupsnapshot?.docs[index]["groupName"]));
-    groupCheckCounts[groupsnapshot?.docs[index]["groupId"]] =
-        groupCheckCounts[groupsnapshot?.docs[index]["groupId"]]! + 1;
+  if (groupCheckCounts[groupID]! < 2) {
+    search_bloc.add(Check_Group_Event(groupID: groupID, groupName: groupName));
+    groupCheckCounts[groupID] = groupCheckCounts[groupID]! + 1;
   }
+
   return Container(
     padding: EdgeInsets.symmetric(
         vertical: 10 * verticalPaddingFactor(height),
@@ -264,14 +263,14 @@ SearchTile(double width, double height, double textScaleFactor,
       ),
       trailing: widget_loading
           ? SizedBox(
-            height: responsiveContainerSize(10, width, height),
-            width: responsiveContainerSize(10, width, height),
-            child: Center(
+              height: responsiveContainerSize(10, width, height),
+              width: responsiveContainerSize(10, width, height),
+              child: Center(
                 child: CircularProgressIndicator(
                   color: OrangeColor,
                 ),
               ),
-          )
+            )
           : InkWell(
               onTap: () {
                 // print(search_name);
@@ -290,7 +289,11 @@ SearchTile(double width, double height, double textScaleFactor,
                     color: result_group ? Colors.green : Colors.red),
                 child: Center(
                   child: Text(
-                    status == "Joined" ?  "Joined" :  status == "Join Now" ?  "Join Now" :  "Removed",
+                    status == "Joined"
+                        ? "Joined"
+                        : status == "Join Now"
+                            ? "Join Now"
+                            : "Removed",
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: "Manrope",
@@ -304,5 +307,3 @@ SearchTile(double width, double height, double textScaleFactor,
     ),
   );
 }
-
-

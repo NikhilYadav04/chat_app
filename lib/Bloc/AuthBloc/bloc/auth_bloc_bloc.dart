@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:bloc/bloc.dart';
 import 'package:chat_app/helper/helper_functions.dart';
+import 'package:chat_app/helper/snack_messages.dart';
 import 'package:chat_app/services/auth_services.dart';
 import 'package:chat_app/services/database_services.dart';
 import 'package:chat_app/widgets/auth/login_page_widgets.dart';
@@ -28,11 +28,13 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
 
   FutureOr<void> registerInitializeEvent(
       RegisterInitializeEvent event, Emitter<AuthBlocState> emit) {
+    //* Initialize or Load The Register Screen
     emit(RegisterInitializeState());
   }
 
   FutureOr<void> registerButtonClickedEvent(
       RegisterButtonClickedEvent event, Emitter<AuthBlocState> emit) async {
+    //* Account Register Started ( Loader Shows)
     emit(RegisterStartState());
 
     final AuthService authService = AuthService();
@@ -44,43 +46,25 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
       emit(RegisterEndState());
       emit(LoginPageNavigateState());
 
-      final snackbar = SnackBar(
-        duration: Duration(seconds: 4),
-        elevation: 0,
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        content: AwesomeSnackbarContent(
-          title: 'Success!!',
-          message: 'Registration Successful',
-          contentType: ContentType.success,
-        ),
-      );
-      ScaffoldMessenger.of(event.context).showSnackBar(snackbar);
+      showSuccessSnackbar(
+          event.context, 'Success!!', 'Registration Successful');
     } else {
-      final snackbar = SnackBar(
-        duration: Duration(seconds: 4),
-        elevation: 0,
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        content: AwesomeSnackbarContent(
-          title: 'Error!',
-          message: '${success}',
-          contentType: ContentType.failure,
-        ),
-      );
-      ScaffoldMessenger.of(event.context).showSnackBar(snackbar);
+      showErrorSnackbar(event.context, 'Error!', '${success}');
 
       emit(RegisterEndState());
     }
+    //* Account Registration Completed ( Loader Ends )
   }
 
   FutureOr<void> loginInitializeEvent(
       LoginInitializeEvent event, Emitter<AuthBlocState> emit) {
+    //* Initialize or Load The Login Screen
     emit(LoginInitializeState());
   }
 
   FutureOr<void> loginButtonClickedEvent(
       LoginButtonClickedEvent event, Emitter<AuthBlocState> emit) async {
+    //* Account Login Started ( Loader Shows)
     emit(LoginStartState());
 
     final AuthService authService = AuthService();
@@ -100,34 +84,12 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
       emit(LoginEndState());
       emit(HomePageNavigateState());
 
-      final snackbar = SnackBar(
-        duration: Duration(seconds: 4),
-        elevation: 0,
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        content: AwesomeSnackbarContent(
-          title: 'Success!!',
-          message: 'Login Successful',
-          contentType: ContentType.success,
-        ),
-      );
-      ScaffoldMessenger.of(event.context).showSnackBar(snackbar);
-      ;
+      showSuccessSnackbar(event.context, 'Success!!', 'Login Successful');
     } else {
-      final snackbar = SnackBar(
-        duration: Duration(seconds: 4),
-        elevation: 0,
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        content: AwesomeSnackbarContent(
-          title: 'Error !',
-          message: '${success}',
-          contentType: ContentType.failure,
-        ),
-      );
-      ScaffoldMessenger.of(event.context).showSnackBar(snackbar);
+      showErrorSnackbar(event.context, 'Error !', '${success}');
 
       emit(LoginEndState());
     }
+    //* Account Login Completed ( Loader Ends )
   }
 }

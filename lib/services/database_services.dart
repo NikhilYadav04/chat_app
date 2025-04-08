@@ -11,7 +11,7 @@ class DatabaseServices {
   final CollectionReference groupCollection =
       FirebaseFirestore.instance.collection("groups");
 
-  // save the userdata
+  //* save the userdata in database
   Future updateUserData(String fullName, String email) async {
     await userCollection.doc(userId).set({
       "fullName": fullName,
@@ -21,19 +21,19 @@ class DatabaseServices {
     });
   }
 
-  // get the userdata
+  //* get the userdata from database
   Future getUserData() async {
     DocumentSnapshot documentSnapshot = await userCollection.doc(userId).get();
     String Fire_Name = documentSnapshot["fullName"];
     return Fire_Name;
   }
 
-  //getting the user groups
+  //* getting the user groups list
   getUserGroups() async {
     return userCollection.doc(userId).snapshots();
   }
 
-  //create a group
+  //* create a group
   Future createGroup(String? Username, String id, String groupName) async {
     DocumentReference groupDocumentReference = await groupCollection.add({
       "groupName": groupName,
@@ -60,7 +60,7 @@ class DatabaseServices {
     });
   }
 
-  // getting the group admin
+  //* getting the group admin
   Future getGroupAdmin(String groupID) async {
     DocumentSnapshot documentSnapshot =
         await groupCollection.doc(groupID).get();
@@ -68,17 +68,17 @@ class DatabaseServices {
     return admin;
   }
 
-  //getting the members
+  //* getting the members
   Future getMemebers(String groupId) async {
     return groupCollection.doc(groupId).snapshots();
   }
 
-  //search the groups
+  //* search the groups
   Future searchByName(String groupName) {
     return groupCollection.where("groupName", isEqualTo: groupName).get();
   }
 
-  // checking is user is joiner
+  //* checking is user is joined in a group
   Future<bool> checkUserJoined(String groupId, String groupName) async {
     DocumentSnapshot documentSnapshot = await userCollection.doc(userId).get();
     List<dynamic> groups = await documentSnapshot["groups"];
@@ -89,7 +89,7 @@ class DatabaseServices {
     }
   }
 
-  //join or exit the group
+  //* join or exit the group
   Future<String> joinGroup(
       String groupId, String groupName, String userId, String? userName) async {
     DocumentSnapshot documentSnapshot =
@@ -141,7 +141,7 @@ class DatabaseServices {
     }
   }
 
-  //to exit the group from info page
+  //* to exit the group from info page
   Future<String> exitGroup(
       String groupId, String groupName, String userId, String? userName) async {
     DocumentSnapshot documentSnapshot =
@@ -176,7 +176,7 @@ class DatabaseServices {
     return "Delete";
   }
 
-  // getting the chats
+  //* getting the chats in a group
   Future getChats(String groupID) async {
     return await groupCollection
         .doc(groupID)
@@ -185,7 +185,7 @@ class DatabaseServices {
         .snapshots();
   }
 
-  //sending messages
+  //* send message in group
   Future sendChat(String groupId, Map<String, dynamic> chatMessage) async {
     await groupCollection.doc(groupId).collection("messages").add(chatMessage);
     await groupCollection.doc(groupId).update({
@@ -195,7 +195,7 @@ class DatabaseServices {
     });
   }
 
-  //deleting messages
+  //* clear all messages from a group
   Future deletechat(String groupID) async {
     CollectionReference collectionReference =
         await groupCollection.doc(groupID).collection("messages");

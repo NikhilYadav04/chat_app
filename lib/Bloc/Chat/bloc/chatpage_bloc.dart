@@ -23,6 +23,7 @@ class ChatpageBloc extends Bloc<ChatpageEvent, ChatpageState> {
 
   FutureOr<void> chat_Initial_Event(
       Chat_Initial_Event event, Emitter<ChatpageState> emit) async {
+    //* Show Loader When Chats Are Loading
     emit(loading_state());
 
     Stream<QuerySnapshot>? chats;
@@ -31,11 +32,14 @@ class ChatpageBloc extends Bloc<ChatpageEvent, ChatpageState> {
         .then((val) {
       chats = val;
     });
+
+    //* Chat Screen is shown along with messages and loader ends
     emit(Chat_Initial_State(chats: chats));
   }
 
   FutureOr<void> info_clicked_event(
       info_clicked_Event event, Emitter<ChatpageState> emit) {
+    //* Group Info Screen Clicked
     emit(info_clicked_State());
   }
 
@@ -55,18 +59,25 @@ class ChatpageBloc extends Bloc<ChatpageEvent, ChatpageState> {
         await DatabaseServices(userId: FirebaseAuth.instance.currentUser!.uid)
             .getMemebers(event.groupID);
 
+    //* Show Group Info
     emit(Group_info_initial_State(admin: admin, members: members));
   }
 
   FutureOr<void> Exit_group_event(
       exit_group_event event, Emitter<ChatpageState> emit) async {
+    //* Show Loader and Group Exit API Call Executes
     emit(loading_state());
     await DatabaseServices(userId: FirebaseAuth.instance.currentUser!.uid)
         .exitGroup(
             event.groupID, event.groupName, event.userID, event.userName);
 
+    //* Show Empty Message In Chat Page For Removed User
     emit(temp_chats());
+
+    //* Show Empty Message In Group Info Page For Removed User
     emit(temp());
+
+    //* Exit Success And Navigate To Home Page
     emit(exit_success());
   }
 
@@ -78,9 +89,12 @@ class ChatpageBloc extends Bloc<ChatpageEvent, ChatpageState> {
 
   FutureOr<void> Chat_message_delete(
       chat_message_delete event, Emitter<ChatpageState> emit) async {
+    //* show loader and Messages Clear API Call Executes
     emit(chat_message_delete_await_state());
     await DatabaseServices(userId: FirebaseAuth.instance.currentUser!.uid)
         .deletechat(event.groupID);
+
+    //* Messages Are Deleted And Loader Ends
     emit(chat_message_delete_state());
   }
 }

@@ -8,7 +8,7 @@ import 'package:page_transition/page_transition.dart';
 class AuthService {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  // login
+  //* login
   Future loginwithEmailPassword(String email, String password) async {
     try {
       // ignore: unused_local_variable
@@ -22,7 +22,7 @@ class AuthService {
     }
   }
 
-  // register
+  //* register
   Future registerWithEmailPassword(
       String fullName, String email, String password) async {
     try {
@@ -40,15 +40,18 @@ class AuthService {
     }
   }
 
-  // signout
+  //* signout
   Future signOut(BuildContext context) async {
     try {
       await firebaseAuth.signOut();
       await HelperFunctions.saveUserLoggedInStatus(false);
       await HelperFunctions.saveUserEMail("");
       await HelperFunctions.saveUserName("");
-      Navigator.push(context,
-          PageTransition(child: LoginPage(), type: PageTransitionType.fade));
+      Navigator.pushAndRemoveUntil(
+        context,
+        PageTransition(child: LoginPage(), type: PageTransitionType.fade),
+        (route) => false, //* removes all previous routes
+      );
     } catch (e) {
       return e;
     }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:chat_app/helper/helper_functions.dart';
+import 'package:chat_app/helper/snack_messages.dart';
 import 'package:chat_app/services/database_services.dart';
 import 'package:chat_app/widgets/home/home_page_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,12 +31,14 @@ class HomeBlocBloc extends Bloc<HomeBlocEvent, HomeBlocState> {
 
   FutureOr<void> homeBlock_Initial_Event(
       HomeBlock_Initial_Event event, Emitter<HomeBlocState> emit) async {
+    //* Store Current User Name and Email
     Home_Name = await HelperFunctions.getUserName();
     Home_Email = await HelperFunctions.getUserEmail();
     snapshots =
         await DatabaseServices(userId: FirebaseAuth.instance.currentUser!.uid)
             .getUserGroups();
 
+    //* Home Page Loaded
     emit(HomeBlock_Initial_State(
         Home_Name: Home_Name, Home_Email: Home_Email, snapshots: snapshots));
   }
@@ -67,12 +70,16 @@ class HomeBlocBloc extends Bloc<HomeBlocEvent, HomeBlocState> {
 
   FutureOr<void> Group_create_clicked_event(
       group_create_clicked_event event, Emitter<HomeBlocState> emit) async {
+    //* Group Created API Call
     await DatabaseServices(userId: FirebaseAuth.instance.currentUser!.uid)
         .createGroup(
       Home_Name,
       FirebaseAuth.instance.currentUser!.uid,
       group_name,
     );
+
+    showSuccessSnackbar(
+        event.context, "Group Created!", "New Group Created Successfully!");
   }
 
   FutureOr<void> Search_page_clicked_event(

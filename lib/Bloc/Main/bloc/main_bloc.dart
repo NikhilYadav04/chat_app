@@ -17,6 +17,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   FutureOr<void> check_User_Logged_In_Event(
       Check_User_Logged_In_Event event, Emitter<MainState> emit) async {
+    //* Check if user is logged in or not ( Opening App Call)
     bool loggedIn = false;
     emit(Loading_State());
 
@@ -25,6 +26,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         loggedIn = value;
       }
     });
+
+    //* Return Status if user is logged in or not
     emit(Check_User_Logged_In_State(key_value: loggedIn));
   }
 }
