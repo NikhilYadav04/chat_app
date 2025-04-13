@@ -1,6 +1,6 @@
-# Chat Bot 🧠💬
+# Chat Bot 💬
 
-**Chat Bot** is a basic yet powerful Flutter application that enables group chatting, powered by Firebase. Users can register using email and password, create or join groups, and chat in real time. This project demonstrates Firebase integration, BLoC state management, and reactive UI with StreamBuilder.
+**Chat Bot** is a basic yet powerful Flutter application that enables group chatting, powered by Firebase. Users can register using email and password, create or join groups, and chat in real time. This project demonstrates Firebase integration, BLoC state management, and chat management with StreamBuilder.
 
 ---
 
@@ -11,7 +11,6 @@ Chat Bot is a real-time group chatting app built with Flutter and Firebase. It a
 - Register/Login with email and password.
 - Create new chat groups or join existing ones.
 - Engage in real-time conversations with group members.
-- Enjoy smooth UI animations and transitions.
 
 ---
 
@@ -22,7 +21,6 @@ This app is created to demonstrate:
 - Firebase integration for authentication and database operations.
 - BLoC pattern for clean state management.
 - Use of `StreamBuilder` for live chat updates.
-- Modular app architecture for scalability and maintenance.
 
 ---
 
@@ -106,7 +104,7 @@ lib/
 
 ## 👨‍💻 M - Maintainers
 
-- **Your Name** – [@yourhandle](https://github.com/yourusername)
+- **Your Name** – https://github.com/NikhilYadav04
 - Contributions welcome! Feel free to open issues or submit pull requests.
 
 ---
